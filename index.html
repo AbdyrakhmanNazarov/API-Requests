@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Requests</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button onclick="getProducts()">GET Products</button>
+    <button onclick="createProduct()">POST Create Product</button>
+    <button onclick="patchPost()">PATCH Post</button>
+    <button onclick="putPost()">PUT Post</button>
+    <button onclick="deletePost()">DELETE Post</button>
+
+    <div id="output"></div>
+
+    <script>
+        function getProducts() {
+            fetch('https://movie.pythonanywhere.com/api/v1/products/')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('output').innerHTML = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('output').innerHTML = 'Error: ' + error;
+            });
+        }
+
+        function createProduct() {
+            fetch('https://movie.pythonanywhere.com/api/v1/products/', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token 4b4320fb372856d4e691069826a5bfa1965e0da0'
+                },
+                body: JSON.stringify({
+                    "name": "iPhone 13 pro",
+                    "description": "Самый надежный",
+                    "content": "Таргет",
+                    "price": 400,
+                    "rating": 5,
+                    "is_published": true,
+                    "category": 9,
+                    "owner": 1,
+                    "tags": [1, 2]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('output').innerHTML = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById('output').innerHTML = 'Error: ' + error;
+            });
+        }
+
+        function patchPost() {
+            fetch('https://jsonplaceholder.typicode.com/posts/1', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: 'Partially Updated Title'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('output').innerHTML = JSON.stringify(data, null, 2);
+            })
+            .catch(err => {
+                document.getElementById('output').innerHTML = 'Error: ' + err;
+            });
+        }
+
+        function putPost() {
+            fetch('https://jsonplaceholder.typicode.com/posts/1', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: 1,
+                    title: 'Updated Title',
+                    body: 'Updated body content',
+                    userId: 1
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('output').innerHTML = JSON.stringify(data, null, 2);
+            })
+            .catch(err => {
+                document.getElementById('output').innerHTML = 'Error: ' + err;
+            });
+        }
+
+        function deletePost() {
+            fetch('https://jsonplaceholder.typicode.com/posts/1', {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('output').innerHTML = 'Post deleted successfully';
+                } else {
+                    document.getElementById('output').innerHTML = 'Failed to delete post';
+                }
+            })
+            .catch(error => {
+                document.getElementById('output').innerHTML = 'Error: ' + error;
+            });
+        }
+    </script>
+</body>
+</html>
